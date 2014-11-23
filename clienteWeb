@@ -1,0 +1,37 @@
+import java.util.*;
+import  java.net.*;
+import java.io.*;
+
+
+/**
+ * Created by ignaciosantonjamolina on 22/11/14.
+ */
+public class clienteWeb {
+
+public static void main (String args []){
+    try {
+        Socket s = new Socket("localhost", 8080);
+        PrintWriter toServer = new PrintWriter(s.getOutputStream()); //true para exigir que el envÃ­o se produzca ya
+        Scanner fromServer = new Scanner(s.getInputStream());
+        toServer.print("GET / HTTP/1.1 \r\n"); // La / es el documento, sustituible por el documento
+        toServer.print("Host: localhost \r\n");
+        toServer.print("\r\n");
+        toServer.flush();
+        String linea = fromServer.nextLine();
+
+        while(linea.length() > 0) {
+            System.out.println(linea);
+            linea = fromServer.nextLine();
+        }
+
+
+        while(fromServer.hasNext()) {
+            linea = fromServer.nextLine();
+            System.out.println(linea);
+        }
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+}
